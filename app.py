@@ -4,7 +4,11 @@ import edgeiq
 
 def main():
     semantic_segmentation = edgeiq.SemanticSegmentation("alwaysai/enet")
-    semantic_segmentation.load(engine=edgeiq.Engine.DNN)
+    if edgeiq.is_opencv_cuda_available():
+        engine = edgeiq.Engine.DNN_CUDA
+    else:
+        engine = edgeiq.Engine.DNN
+    semantic_segmentation.load(engine)
 
     print("Engine: {}".format(semantic_segmentation.engine))
     print("Accelerator: {}\n".format(semantic_segmentation.accelerator))
